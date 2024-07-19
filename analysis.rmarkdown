@@ -18,6 +18,7 @@ library(bayesplot)
 ```
 
 
+
 ### Background Information
 
 Bertrand, Marianne and Sendhil Mullainathan. 2004. "Are Emily and Greg More Employable Than Lakisha and Jamal? A Field Experiment on Labor Market Discrimination." American Economic Review, 94 (4): 991–1013. Data cleaned and discussed in "Quantitative Social Science: An Introduction" by Kosuke Imai.
@@ -46,6 +47,7 @@ Preceptor Table:
 
 ## Example Preceptor Table
   
+
 ```{r}
 tibble(ID = c("1", "2", "...", "10", "11", "...", "N"),
        attitude_after_control = c("Yes*", "No", "...", "No*", "Yes*", "...", "Yes"),
@@ -68,6 +70,7 @@ tibble(ID = c("1", "2", "...", "10", "11", "...", "N"),
   tab_spanner(label = "Potential Outcomes", columns = c(attitude_after_control, attitude_after_treated)) |>
   tab_spanner(label = "Covariate", columns = c(treatment))
 ```
+
 
 ## Questions for Second Class
 
@@ -104,6 +107,7 @@ Unconfoundedness means that the treatment assignment is independent of the poten
 > Describe in words what the Preceptor Table would look like if we were trying to, instead, predict whether or not someone would get a callback?
 
 The Preceptor Table would look like this. When we predict, we only have one outcome column. We don't care about the counterfactual. We don't care what would have happened if, for example, a white name had been used in resume 1. All we care about is a model which can predict, given information about treatment and other variables, what will happen to a given resume.
+
 
 ```{r}
 tibble(ID = c("1", "2", "...", "10", "11", "...", "N"),
@@ -146,10 +150,9 @@ fit_resume <- brm(formula = call ~ race,
 fit_resume |>
     add_epred_draws(newdata = tibble(race = c("white", "black"))) |> select(race, .epred) |>
   ggplot(aes(x = .epred, fill = race)) +
-  geom_histogram(aes(y = after_stat(count/sum(count))),
-                 bins = 100) +
+  geom_histogram(bins = 100) +
   labs(title = "Posterior for Callback Rates",
-       subtitle = "Resumes with white-coded names are much more likely to recieve callbacks",
+       subtitle = "Results with white-coded names are much more likely to recieve callbacks",
        x = "Probability of Callback",
        y = NULL,
        fill = "(Likely) Race of\nName on Resume") +
@@ -157,4 +160,3 @@ fit_resume |>
 
 ```
 
-  
